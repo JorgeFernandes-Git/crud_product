@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
@@ -22,14 +23,14 @@ public class ProductController {
     private ProductRepository repository;
 
     @GetMapping
-    public ResponseEntity getAllProducts(){
+    public ResponseEntity<List<Product>> getAllProducts(){
         var allProducts = repository.findAllByActiveTrue();
         return ResponseEntity.ok(allProducts);
 
     }
 
     @PostMapping
-    public ResponseEntity registerProduct(@RequestBody @Valid RequestProduct data) {
+    public ResponseEntity<Product> registerProduct(@RequestBody @Valid RequestProduct data) {
         Product newProduct = new Product(data);
 //        System.out.println(data);
         repository.save(newProduct);
@@ -38,7 +39,7 @@ public class ProductController {
 
     @PutMapping
     @Transactional
-    public ResponseEntity updateProduct(@RequestBody @Valid RequestProduct data) {
+    public ResponseEntity<Product> updateProduct(@RequestBody @Valid RequestProduct data) {
         Optional<Product> product = repository.findById(data.id());
         if (product.isPresent()) {
             Product newProduct = product.get();
@@ -78,7 +79,7 @@ public class ProductController {
 //    }
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity deleteProduct(@PathVariable String id) {
+    public ResponseEntity<Product> deleteProduct(@PathVariable String id) {
         Optional<Product> product = repository.findById(id);
         if (product.isPresent()) {
             Product newProduct = product.get();
@@ -88,5 +89,4 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
     }
-
 }
