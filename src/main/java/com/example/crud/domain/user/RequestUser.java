@@ -8,6 +8,6 @@ public record RequestUser(
         String name,
         @NotBlank
         String location,
-        @NotNull
-        Integer nif) {
+        @NotBlank
+        String nif) {
 }

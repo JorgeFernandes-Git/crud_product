@@ -15,9 +15,12 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+
     private String name;
     private String location;
-    private Integer nif;
+
+    @Column(unique = true)
+    private String nif;
 
     public User(RequestUser data) {
         this.name = data.name();

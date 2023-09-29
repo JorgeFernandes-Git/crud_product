@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -19,13 +20,13 @@ public class UserController {
     private UserRepository repository;
 
     @GetMapping
-    public ResponseEntity getAllUsers(){
+    public ResponseEntity<List<User>> getAllUsers(){
         var allUsers = repository.findAll();
         return ResponseEntity.ok(allUsers);
     }
 
     @PostMapping
-    public ResponseEntity registerUser(@RequestBody @Valid RequestUser data) {
+    public ResponseEntity<User> registerUser(@RequestBody @Valid RequestUser data) {
         User newUser = new User(data);
         repository.save(newUser);
         return ResponseEntity.ok().build();
@@ -33,7 +34,7 @@ public class UserController {
 
     @PutMapping
     @Transactional
-    public ResponseEntity updateLocation(@RequestBody String id, String newLocation) {
+    public ResponseEntity<User> updateLocation(@RequestBody String id, String newLocation) {
         Optional<User> user = repository.findById(id);
         if (user.isPresent()) {
             User newUser = user.get();
